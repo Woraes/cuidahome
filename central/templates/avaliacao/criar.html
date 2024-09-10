@@ -1,0 +1,145 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block conteudo %}
+<div class="container">
+    <h1>{% if turno %}Editar{% else %}Criar{% endif %} Escala</h1>
+    <div class="p-1">
+    {% if erro %}
+    <div class="alert alert-danger" role="alert">
+        {{ erro }}
+    </div>
+    {% endif %}
+    </div>
+    
+
+    <form method="post" enctype="multipart/form-data" class="row">
+        {% csrf_token %}
+        <div class="form-group col-md-3">          
+            {{ form.cuidador|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-3">          
+            {{ form.paciente|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-3">          
+            {{ form.data_inicio|as_crispy_field }}
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const dtNascimentoInput = document.querySelector("#{{ form.data_inicio.id_for_label }}");
+                    dtNascimentoInput.type = 'date';
+                });
+            </script>
+        </div>
+        <div class="form-group col-md-3">          
+            {{ form.data_fim|as_crispy_field }}
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const dtNascimentoInput = document.querySelector("#{{ form.data_fim.id_for_label }}");
+                    dtNascimentoInput.type = 'date';
+                });
+            </script>
+        </div>
+        <div class="form-group col-md-3">          
+            {{ form.turno_duracao|as_crispy_field }}
+        </div>
+       
+        <div class="form-group col-md-12">
+            <p class="card-text">Após preencher, clique em cadastrar.</p>
+            <button type="submit" class="btn btn-primary">{% if turno %}Salvar{% else %}Criar{% endif %}</button>
+            <a href="{% url 'listar_turnos' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- <script type="text/javascript">
+    var turnosOcupados = JSON.parse('{{ turnos_ocupados_json|escapejs }}');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dataInicioInput = document.querySelector("#{{ form.data_inicio.id_for_label }}");
+        const dataFimInput = document.querySelector("#{{ form.data_fim.id_for_label }}");
+
+        function desabilitarDatasOcupadas(input) {
+            input.addEventListener('input', function() {
+                let dataSelecionada = new Date(input.value);
+                let erroMensagem = '';
+                turnosOcupados.forEach(function(turno) {
+                    let dataInicioOcupada = new Date(turno.data_inicio);
+                    let dataFimOcupada = new Date(turno.data_fim);
+                    
+                    if (dataSelecionada >= dataInicioOcupada && dataSelecionada <= dataFimOcupada) {
+                        erroMensagem = "Essa data já está ocupada por outro cuidador. Por favor, escolha outra data.";
+                        input.value = '';
+                    }
+                });
+
+                if (erroMensagem) {
+                    const alertBox = document.createElement('div');
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.role = 'alert';
+                    alertBox.textContent = erroMensagem;
+
+                    const container = document.querySelector('.container');
+                    container.prepend(alertBox);
+                }
+            });
+        }
+
+        desabilitarDatasOcupadas(dataInicioInput);
+        desabilitarDatasOcupadas(dataFimInput);
+    });
+</script> -->
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const dataInicioInput = document.querySelector("#{{ form.data_inicio.id_for_label }}");
+        const dataFimInput = document.querySelector("#{{ form.data_fim.id_for_label }}");
+
+        function formatarData(data) {
+            const ano = data.getFullYear();
+            const mes = String(data.getMonth() + 1).padStart(2, '0');
+            const dia = String(data.getDate()).padStart(2, '0');
+            return `${ano}-${mes}-${dia}`;
+        }
+
+        if (dataInicioInput) {
+            dataInicioInput.value = formatarData(new Date("{{ form.data_inicio.value }}"));
+        }
+
+        if (dataFimInput) {
+            dataFimInput.value = formatarData(new Date("{{ form.data_fim.value }}"));
+        }
+
+        function desabilitarDatasOcupadas(input) {
+            input.addEventListener('input', function() {
+                let dataSelecionada = new Date(input.value);
+                let erroMensagem = '';
+                turnosOcupados.forEach(function(turno) {
+                    let dataInicioOcupada = new Date(turno.data_inicio);
+                    let dataFimOcupada = new Date(turno.data_fim);
+                    
+                    if (dataSelecionada >= dataInicioOcupada && dataSelecionada <= dataFimOcupada) {
+                        erroMensagem = "Essa data já está ocupada por outro cuidador. Por favor, escolha outra data.";
+                        input.value = '';
+                    }
+                });
+
+                if (erroMensagem) {
+                    const alertBox = document.createElement('div');
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.role = 'alert';
+                    alertBox.textContent = erroMensagem;
+
+                    const container = document.querySelector('.container');
+                    container.prepend(alertBox);
+                }
+            });
+        }
+
+        desabilitarDatasOcupadas(dataInicioInput);
+        desabilitarDatasOcupadas(dataFimInput);
+    });
+</script>
+
+{% endblock %}

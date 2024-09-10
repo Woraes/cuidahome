@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block conteudo %}
+<div class="container">
+    <h1>Lista de Escalas</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cuidador</th>
+                <th>Data de Início</th>
+                <th>Data de Fim</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turno in turnos %}
+            <tr>
+                <td>{{ turno.id }}</td>
+                <td>{{ turno.cuidador.nome }}</td>
+                <td>{{ turno.data_inicio }}</td>
+                <td>{{ turno.data_fim }}</td>
+                <td>
+                    <a href="{% url 'editar_turno' turno.id %}" class="btn btn-primary">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'criar_turno' %}" class="btn btn-success">Adicionar Escala</a>
+</div>
+
+{% endblock %}

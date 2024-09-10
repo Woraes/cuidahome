@@ -1,0 +1,68 @@
+{% extends 'base/base-fullscreen.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>::Autenticação::</title>
+{% endblock titulo %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/general.css' %}">
+{% endblock head %}
+
+{% block extrahead %}
+<!-- Inclua apenas uma versão do Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+{% endblock extrahead %}
+
+{% block conteudo %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="card col-md-6 col-lg-4 mt-5">
+      <div class="card-body">
+        <h2 class="font-weight-bolder text-info text-center">Sistema Cuidador</h2>
+        
+        <div class="mb-3">
+          {% if msg_erro %}
+            {% for message in msg_erro %}
+              <div class="alert alert-danger" role="alert">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-center">Adicione suas credenciais</p>
+          {% endif %}
+        </div>
+        
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          
+          <div class="form-group">
+            <label for="id_username">Usuário</label>
+            <input class="form-control" type="text" placeholder="Seu Usuário" name="username" id="id_username" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <div class="input-group">
+              <input class="form-control" type="password" placeholder="Sua Senha" name="password" id="password" required>
+              <div class="input-group-append">
+                <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+              </div>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+          
+          <div class="text-center mt-3">
+            <p>Homologação WillSis</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock conteudo %}

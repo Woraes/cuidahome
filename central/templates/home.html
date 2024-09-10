@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block conteudo %}
+<div class="content">
+   <div class="container">
+    <div id="calendar"></div>
+
+    <!-- Renderize os dados como JSON -->
+    <script type="text/javascript">
+        var turnos = JSON.parse('{{ turnos_json|escapejs }}');
+    </script>
+
+    <!-- Seu script personalizado -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: turnos.map(turno => ({
+                    title: `${turno.cuidador__nome} - ${turno.turno_duracao}h`,
+                    start: turno.data_inicio,
+                    end: turno.data_fim,
+                    color: 'green'
+                })),
+                contentHeight: 'auto',
+                aspectRatio: 2,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                }
+            });
+            calendar.render();
+        });
+    </script>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <h1>Seu Painel</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Pacientes</h5>
+                        <p class="card-text">{{ total_pacientes }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Cuidadores</h5>
+                        <p class="card-text">{{ cuidadores_em_servico }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Escalas </h5>
+                        <p class="card-text">{{ escalas_pendentes }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+</div>
+
+{% endblock conteudo %}

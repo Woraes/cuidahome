@@ -1,0 +1,33 @@
+{% load static %}
+
+<!-- Botão de Menu para Mobile -->
+<button id="toggle-sidebar" class="btn btn-primary">
+    <i class="fa fa-bars"></i>
+</button>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <h2>Menu</h2>
+    <a href="{% url 'home' %}">Dashboard</a>
+    {% if is_adm %}
+    <a href="{% url 'listar_pacientes' %}">Pacientes</a>
+    <a href="{% url 'listar_cuidadores' %}">Cuidadores</a>
+    {%endif %}
+    <a href="{% url 'listar_turnos' %}">Escalas</a>
+    <a href="{% url 'criar_avaliacao' %}">Avaliação Diária</a>
+</div>
+
+<!-- Script para controlar a sidebar -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.querySelector('.content');
+
+        // Toggle sidebar on button click
+        toggleSidebarBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            content.classList.toggle('sidebar-active');
+        });
+    });
+</script>

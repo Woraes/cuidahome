@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block conteudo %}
+<div class="container">
+    <h1>Lista de Cuidadores</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cuidador in cuidadores %}
+            <tr>
+                <td>{{ cuidador.id }}</td>
+                <td>{{ cuidador.nome }}</td>
+                <td>{{ cuidador.email }}</td>
+                <td>
+                    <a href="{% url 'editar_cuidador' cuidador.id %}" class="btn btn-primary">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'criar_cuidador' %}" class="btn btn-success">Adicionar Cuidador</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}
